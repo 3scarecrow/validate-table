@@ -1,1 +1,1 @@
-# vue-validate-table
+# validate-table
