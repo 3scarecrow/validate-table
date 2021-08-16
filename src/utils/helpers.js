@@ -4,23 +4,14 @@ export function hasOwn(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key)
 }
 
-/**
- * kebabCase a string
- */
 export function kebabCase(str) {
   return str.replace(/\B([A-Z])/g, '-$1').toLowerCase()
 }
 
-/**
- * capitalize a string.
- */
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-/**
- * camelize a string
- */
 export function camelize(str) {
   return str.replace(/-(\w)/g, (_, w) => (w ? w.toUpperCase() : w))
 }
@@ -32,12 +23,11 @@ export function upperFirst(str) {
 // 创建新对象，对象的 key 由 iteratee 返回值组成
 export function mapKey(object, iteratee) {
   object = Object(object)
-  const result = {}
-  Object.keys(object).forEach((key) => {
+  return Object.keys(object).reduce((prev, key) => {
     const value = object[key]
-    result[iteratee(value, key, object)] = value
-  })
-  return result
+    prev[iteratee(value, key, object)] = value
+    return prev
+  }, {})
 }
 
 /**
@@ -45,7 +35,7 @@ export function mapKey(object, iteratee) {
  * @param {Object} object 目标对象
  */
 export function kebabCaseObjectKey(object) {
-  return mapKey(object, (value, key) => kebabCase(key))
+  return mapKey(object, (_, key) => kebabCase(key))
 }
 
 export function ensureArray(val) {
@@ -53,10 +43,8 @@ export function ensureArray(val) {
 }
 
 export function pick(object, keys) {
-  return keys.reduce((obj, key) => {
-    if (object && hasOwn(object, key)) {
-      obj[key] = object[key]
-    }
-    return obj
+  return keys.reduce((prev, key) => {
+    object && hasOwn(object, key) && (prev[key] = object[key])
+    return prev
   }, {})
 }

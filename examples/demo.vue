@@ -1,23 +1,9 @@
 <template>
-  <div id="demo">
-    <p>
-      <el-button @click="handleRowValidate">校验第1行</el-button>
-      <el-button @click="$refs.ValidateTable.validateColumn('inputRule')">
-        校验列（校验规则）校验
-      </el-button>
-      <el-button @click="$refs.ValidateTable.clearRowValidate([0])">
-        清除第1行校验
-      </el-button>
-      <el-button @click="$refs.ValidateTable.clearColumnValidate('inputRule')">
-        清除列（校验规则）校验
-      </el-button>
-    </p>
-    <ValidateTable
-      ref="ValidateTable"
-      v-bind="config"
-      :selection.sync="selection"
-    />
-  </div>
+  <ValidateTable
+    ref="ValidateTable"
+    v-bind="config"
+    :selection.sync="selection"
+  />
 </template>
 
 <script>
@@ -151,8 +137,8 @@ export default {
             },
           },
           {
-            name: 'inputNumber',
-            prop: 'inputNumber',
+            name: 'number',
+            prop: 'number',
             label: '计数器',
           },
           {
@@ -176,14 +162,6 @@ export default {
         ],
       },
     }
-  },
-
-  methods: {
-    handleRowValidate() {
-      this.$refs.ValidateTable.validateRow([0], (err) => {
-        console.log(err)
-      })
-    },
   },
 }
 </script>

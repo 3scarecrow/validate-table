@@ -7,7 +7,15 @@ script: npm run test:unit
 
 deploy:
   - provider: npm
-    email: 3sunjunhao@gmail.com
+    email: 1648314523@qq.com
     api_key: $NPM_TOKEN
     on:
       repo: 3scarecrow/validate-table
+
+  - provider: pages
+    local-dir: docs/.vuepress/dist
+    skip-cleanup: true
+    github_token: $GITHUB_TOKEN
+    email: 1648314523@qq.com
+    on:
+      branch: master

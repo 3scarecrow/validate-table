@@ -1,11 +1,11 @@
-# 默认
+---
+pageClass: demo-page-class
+---
 
 <!-- markdownlint-disable MD033 -->
 
 <client-only>
 
-## Example
-
-<demo-default />
+<demo-validate />
 
 </client-only>

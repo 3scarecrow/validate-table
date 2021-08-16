@@ -2,7 +2,7 @@
 import fieldMixin from '@/mixins/fieldMixin'
 
 export default {
-  name: 'FieldInputNumber',
+  name: 'FieldNumber',
 
   mixins: [fieldMixin],
 

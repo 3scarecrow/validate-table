@@ -24,7 +24,9 @@ export default {
     viewConfig: {
       type: Object,
       default: () => ({})
-    }
+    },
+    fieldName: String,
+    renderMap: Map
   },
 
   data() {
@@ -67,7 +69,6 @@ export default {
         ? this.column.componentEvents
         : {}
       return Object.keys(events).reduce((wrapperEvents, name) => {
-        // bind 的 thisArg 设为 null，使得传入的函数的 this 绑定为原函数的 this
         wrapperEvents[name] = events[name].bind(null, this.scope)
         return wrapperEvents
       }, {})

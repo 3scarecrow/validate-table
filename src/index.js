@@ -1,16 +1,14 @@
-import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import './import-element-ui'
 import ValidateTable from './validate-table'
 
-Vue.use(ElementUI)
+function bindInstall(name, component) {
+  const install = vue => vue.component(name, component)
 
-ValidateTable.install = function (Vue) {
-  Vue.component(ValidateTable.name, ValidateTable)
+  component.install = install
+
+  window && window.Vue && install(window.Vue)
+
+  return component
 }
 
-if (typeof window !== 'undefined' && window.Vue) {
-  ValidateTable.install(window.Vue)
-}
-
-export default ValidateTable
+export default bindInstall(ValidateTable.name, ValidateTable)

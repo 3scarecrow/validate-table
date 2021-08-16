@@ -19,9 +19,18 @@ module.exports = {
     docsDir: 'docs',
     sidebar: [
       {
+        title: 'ValidateTable',
+        children: [
+          ['/dev/props.md', 'Props'],
+          ['/dev/prop-table-columns.md', 'Prop: tableColumns'],
+          ['/dev/methods-and-events.md', 'Methods & Events']
+        ]
+      },
+      {
         title: 'DEMO',
         children: [
-          '/demo/default',
+          ['/demo/validate.md', '校验'],
+          ['/demo/basic.md', '基础表格'],
         ]
       },
     ]

@@ -1,4 +1,4 @@
-<script>
+import './index.less'
 import allComponent from '@/components/fields'
 import { upperFirst, ensureArray } from '@/utils/helpers'
 import { isPlainObject, isFunction } from '@/utils/types'
@@ -8,7 +8,7 @@ const _getColumnProp = (rowIndex, prop) => {
 }
 
 const _getFieldName = (rowIndex, prop) => {
-  return `Field.${rowIndex}.${prop}`
+  return `Field_rowIndex-${rowIndex}_column-${prop}`
 }
 
 export default {
@@ -39,10 +39,7 @@ export default {
       type: [Boolean, String],
       default: false,
     },
-    rules: {
-      type: Object,
-      default: () => ({}),
-    },
+    rules: Object,
     height: [Number, String],
     mode: {
       type: String,
@@ -57,6 +54,7 @@ export default {
   data() {
     return {
       internalSelection: [],
+      renderMap: new Map,
       form: {
         internalData: [],
       },
@@ -164,15 +162,16 @@ export default {
       return this.internalSelection
     },
     // 获取选择类组件的 option
-    getColumnOptions(index, prop) {
-      const field = _getFieldName(index, prop)
-      return this.$refs[field].options
+    getColumnOptions(rowIndex, prop) {
+      const fieldName = _getFieldName(rowIndex, prop)
+      return this.renderMap.get(fieldName).options
+      // return this.$refs[field].options
     },
     // 更新选择类组件的 option
-    updateColumnOptions(index, prop) {
-      const field = _getFieldName(index, prop)
-      return this.$refs[field].resolveOptions()
-    },
+    // updateColumnOptions(rowIndex, prop) {
+    //   const field = _getFieldName(rowIndex, prop)
+    //   return this.$refs[field].resolveOptions()
+    // },
 
     /**
      * 内部调用方法
@@ -204,14 +203,18 @@ export default {
       const component = this.getFieldComponent(name)
       if (render) return render(scope)
       if (component) {
+        const fieldName = _getFieldName($index, prop)
+        this.renderMap.set(fieldName, Object.create(null))
         return this.$createElement(component, {
-          ref: _getFieldName($index, prop),
+          // ref: _getFieldName($index, prop),
           props: {
             scope,
             row,
             column,
             mode: this.mode,
             viewConfig: viewConfig,
+            fieldName,
+            renderMap: this.renderMap
           },
         })
       }
@@ -294,7 +297,6 @@ export default {
     const ElTable = (
       <el-table
         ref="ElTable"
-        v-loading={this.loading}
         height={this.height}
         data={this.form.internalData}
         {...{ props: this.mergedProps }}
@@ -320,23 +322,3 @@ export default {
     )
   },
 }
-</script>
-<style lang="less" scoped>
-.validate-table {
-  /deep/.el-table {
-    th {
-      background: #f5f7fa;
-    }
-    .el-table__column--validate > .cell {
-      overflow: visible;
-      .el-form-item {
-        margin-bottom: 0;
-        padding: 6px 0;
-        .el-form-item__error {
-          padding-top: 0;
-        }
-      }
-    }
-  }
-}
-</style>

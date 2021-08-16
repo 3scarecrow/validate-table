@@ -39,11 +39,5 @@ module.exports = {
         clear: false
       }))
     }
-  },
-
-  devServer: {
-    port: 8090,
-    disableHostCheck: true,
-    before: require('./tests/mock-api')
   }
 }

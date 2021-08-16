@@ -1,4 +1,5 @@
 import { isFunction, isArray, isPromise } from '@/utils/types'
+import { ensureArray } from '@/utils/helpers'
 
 export default {
   data() {
@@ -15,15 +16,17 @@ export default {
     },
     getViewModeText() {
       const value = this.value
-      const values = isArray(value) ? value : [value]
+      const values = ensureArray(value)
       return values.map(v => this.optionMap.get(v) || '').join()
     }
   },
 
-  mounted() {
+  async mounted() {
     const { options } = this.column
     if (options) {
-      this.resolveOptions()
+      await this.resolveOptions()
+      const instance = this.renderMap.get(this.fieldName)
+      instance.options = this.options
       isFunction(options) && this.$watch(options, this.resolveOptions)
     }
   },
