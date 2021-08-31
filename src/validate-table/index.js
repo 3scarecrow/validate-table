@@ -8,7 +8,7 @@ const _getColumnProp = (rowIndex, prop) => {
 }
 
 const _getFieldName = (rowIndex, prop) => {
-  return `Field_rowIndex-${rowIndex}_column-${prop}`
+  return `Field_row-${rowIndex}_column-${prop}`
 }
 
 export default {
@@ -85,7 +85,7 @@ export default {
         : null
       return finalColumn
     },
-    isPureTable() {
+    isPlainTable() {
       return (
         !this.rules &&
         !this.tableColumns.some(
@@ -311,7 +311,7 @@ export default {
     const formProps = { model: this.form, disabled: this.disabled }
     return (
       <div class="validate-table">
-        {this.isPureTable ? (
+        {this.isPlainTable ? (
           ElTable
         ) : (
           <el-form ref="ElForm" {...{ props: formProps }}>
