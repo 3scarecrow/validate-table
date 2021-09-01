@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   title: 'validate-table',
-  base: '/validate-table',
+  base: '/validate-table/',
   configureWebpack: () => {
     return {
       resolve: {
