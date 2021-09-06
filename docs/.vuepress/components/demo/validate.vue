@@ -14,8 +14,6 @@
 
 <script>
 export default {
-  name: 'Validate',
-
   data() {
     return {
       config: {

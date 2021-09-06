@@ -1,7 +1,8 @@
 const path = require('path')
+const version = require('../../package.json').version
 
 module.exports = {
-  title: 'validate-table',
+  title: `validate-table v${version}`,
   base: '/validate-table/',
   configureWebpack: () => {
     return {
