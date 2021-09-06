@@ -287,7 +287,10 @@ export default {
             },
           }
         }
-        return this.$createElement('el-table-column', propsData)
+        const VNodeChildren = Array.isArray(children)
+          ? children.map(child => _createColumn(child))
+          : null
+        return this.$createElement('el-table-column', propsData, VNodeChildren)
       }
       return isPlainObject(column) ? _createColumn(column) : null
     },
