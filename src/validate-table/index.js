@@ -3,12 +3,12 @@ import allComponent from '@/components/fields'
 import { upperFirst, ensureArray } from '@/utils/helpers'
 import { isPlainObject, isFunction } from '@/utils/types'
 
-const _getColumnProp = (rowIndex, prop) => {
+const getColumnProp = (rowIndex, prop) => {
   return `internalData.${rowIndex}.${prop}`
 }
 
-const _getFieldName = (rowIndex, prop) => {
-  return `Field_row-${rowIndex}_column-${prop}`
+const getFieldName = (rowIndex, prop) => {
+  return `field_row-${rowIndex}_column-${prop}`
 }
 
 export default {
@@ -106,9 +106,6 @@ export default {
   },
 
   methods: {
-    /**
-     * 供外部调用方法
-     */
     validate() {
       let flag = false
       this.$refs.ElForm.validate((valid) => {
@@ -121,7 +118,7 @@ export default {
       const allProps = this.tableColumns.map((c) => c.prop)
       rowIndexs.forEach((index) => {
         this.$refs.ElForm.validateField(
-          allProps.map((prop) => _getColumnProp(index, prop)),
+          allProps.map((prop) => getColumnProp(index, prop)),
           callback
         )
       })
@@ -130,7 +127,7 @@ export default {
       const props = ensureArray(prop)
       this.form.internalData.forEach((_, index) => {
         this.$refs.ElForm.validateField(
-          props.map((prop) => _getColumnProp(index, prop)),
+          props.map((prop) => getColumnProp(index, prop)),
           callback
         )
       })
@@ -143,7 +140,7 @@ export default {
       const allProps = this.tableColumns.map((c) => c.prop)
       rowIndexs.forEach((index) => {
         this.$refs.ElForm.clearValidate(
-          allProps.map((prop) => _getColumnProp(index, prop))
+          allProps.map((prop) => getColumnProp(index, prop))
         )
       })
     },
@@ -151,7 +148,7 @@ export default {
       const props = ensureArray(prop)
       this.form.internalData.forEach((_, index) => {
         this.$refs.ElForm.clearValidate(
-          props.map((prop) => _getColumnProp(index, prop))
+          props.map((prop) => getColumnProp(index, prop))
         )
       })
     },
@@ -163,19 +160,10 @@ export default {
     },
     // 获取选择类组件的 option
     getColumnOptions(rowIndex, prop) {
-      const fieldName = _getFieldName(rowIndex, prop)
+      const fieldName = getFieldName(rowIndex, prop)
       return this.renderMap.get(fieldName).options
       // return this.$refs[field].options
     },
-    // 更新选择类组件的 option
-    // updateColumnOptions(rowIndex, prop) {
-    //   const field = _getFieldName(rowIndex, prop)
-    //   return this.$refs[field].resolveOptions()
-    // },
-
-    /**
-     * 内部调用方法
-     */
     getFieldComponent(name) {
       return allComponent[`Field${upperFirst(name)}`]
     },
@@ -187,7 +175,6 @@ export default {
       if (this.selectionColumn && !this.disabled) {
         if (this.selectionColumn.type === 'single') {
           this.$refs.ElTable.clearSelection()
-          // this.$refs.ElTable.store.states.selection = []
         }
         this.$refs.ElTable.toggleRowSelection(row)
       }
@@ -203,10 +190,9 @@ export default {
       const component = this.getFieldComponent(name)
       if (render) return render(scope)
       if (component) {
-        const fieldName = _getFieldName($index, prop)
+        const fieldName = getFieldName($index, prop)
         this.renderMap.set(fieldName, Object.create(null))
         return this.$createElement(component, {
-          // ref: _getFieldName($index, prop),
           props: {
             scope,
             row,
@@ -226,7 +212,7 @@ export default {
       const rules = this.getRules(column)
       const isRuleFunction = isFunction(rules)
       const props = {
-        prop: _getColumnProp($index, prop),
+        prop: getColumnProp($index, prop),
         rules: isRuleFunction ? rules(scope) : rules,
       }
       const formItemData = { props }
@@ -268,7 +254,7 @@ export default {
     },
     renderTableColumn(column) {
       const _createColumn = (column) => {
-        const { render, visible = true, ...props } = column
+        const { render, children, visible = true, ...props } = column
         const columnVisible = isFunction(visible) ? visible() : visible
         if (!columnVisible) return null
         const propsData = { props }
